@@ -6,13 +6,15 @@
     <title>Rei 🌸</title>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* HỆ THỐNG MÀU SẮC (CÓ THỂ THAY ĐỔI) */
+        /* HỆ THỐNG MÀU SẮC */
         :root {
             --accent: #ec407a; 
             --bg-main: #fce4ec; 
             --bg-card: #ffffff; 
             --text-main: #000000; 
+            --text-muted: #666666;
             --border: #f8bbd0;
+            --red: #ff5f5f;
             --radius: 12px;
         }
 
@@ -20,26 +22,19 @@
         body { background-color: var(--bg-main); color: var(--text-main); padding: 20px; transition: 0.3s; }
         
         /* HEADER & TIỆN ÍCH */
-        .header { text-align: center; margin-bottom: 20px; position: relative; }
+        .header { text-align: center; margin-bottom: 20px; }
         .header h1 { color: var(--accent); font-size: 28px; }
-        
         .clock-box { font-size: 18px; font-weight: bold; margin: 10px 0; color: var(--text-main); }
         
         .goal-container { 
-            background: var(--bg-card); 
-            padding: 15px; 
-            border-radius: var(--radius); 
-            display: inline-block; 
-            border: 2px solid var(--accent);
-            margin-bottom: 20px;
-            position: relative;
+            background: var(--bg-card); padding: 15px; border-radius: var(--radius); 
+            display: inline-block; border: 2px solid var(--accent); margin-bottom: 20px;
         }
         .goal-text { font-weight: 800; font-size: 16px; color: var(--accent); }
         .edit-goal-btn { margin-left: 10px; cursor: pointer; font-size: 12px; color: var(--text-muted); text-decoration: underline; }
 
-        /* BỘ CHỈNH MÀU */
         .theme-picker { margin-bottom: 20px; display: flex; justify-content: center; gap: 10px; }
-        .color-dot { width: 25px; height: 25px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; }
+        .color-dot { width: 25px; height: 25px; border-radius: 50%; cursor: pointer; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
         /* TABS */
         .nav-tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;}
@@ -48,35 +43,43 @@
 
         .tab-content { display: none; background: var(--bg-card); padding: 20px; border-radius: var(--radius); box-shadow: 0 4px 15px rgba(0,0,0,0.05); max-width: 1000px; margin: 0 auto; }
         .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* BẢNG LỊCH THÁNG */
+        .cal-nav { display: flex; justify-content: center; align-items: center; margin-bottom: 15px; }
+        .cal-nav button { background: var(--bg-main); color: var(--accent); border: 1px solid var(--border); padding: 8px 15px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .cal-nav button:hover { background: var(--accent); color: white; }
+        
         .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
         .cal-header { font-weight: bold; color: var(--accent); padding: 10px 0; text-align: center; border-bottom: 2px solid var(--border); }
-        .cal-day { border: 1px solid #f0f0f0; border-radius: 8px; min-height: 90px; padding: 5px; position: relative; }
-        .day-num { font-weight: bold; font-size: 12px; }
-        .event-tag { font-size: 10px; background: var(--bg-main); color: var(--accent); padding: 2px 4px; border-radius: 4px; margin-top: 2px; cursor: pointer; border-left: 2px solid var(--accent); }
-
+        .cal-day { border: 1px solid #f0f0f0; border-radius: 8px; min-height: 100px; padding: 5px; position: relative; display: flex; flex-direction: column; }
+        .day-num { font-weight: bold; font-size: 12px; margin-bottom: 5px; }
+        .event-tag { font-size: 11px; background: var(--bg-main); color: var(--accent); padding: 4px; border-radius: 4px; margin-bottom: 3px; cursor: pointer; border-left: 3px solid var(--accent); word-break: break-word; }
+        
         /* WEEKLY PLANNER */
-        .weekly-grid { display: grid; grid-template-columns: 70px repeat(7, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+        .weekly-grid { display: grid; grid-template-columns: 70px repeat(7, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
         .wk-header, .wk-time, .wk-cell { background: #fff; padding: 8px; font-size: 12px; }
         .wk-header { text-align: center; font-weight: bold; color: var(--accent); background: var(--bg-main); }
-        .wk-cell { min-height: 100px; display: flex; flex-direction: column; gap: 4px; }
-        .task-card { background: var(--bg-main); padding: 4px; border-radius: 4px; font-size: 11px; display: flex; align-items: center; justify-content: space-between; }
+        .wk-time { font-weight: bold; display: flex; align-items: center; justify-content: center; background: var(--bg-main); color: var(--accent); }
+        .wk-cell { min-height: 120px; display: flex; flex-direction: column; gap: 4px; }
         
-        .add-btn-small { font-size: 10px; color: var(--accent); cursor: pointer; margin-top: auto; text-align: center; border: 1px dashed var(--accent); border-radius: 4px; }
+        .task-card { background: var(--bg-main); padding: 6px; border-radius: 4px; font-size: 11px; display: flex; align-items: flex-start; justify-content: space-between; border-left: 3px solid var(--accent); gap: 5px; }
+        .task-card-text { flex: 1; word-break: break-word; }
+        .task-del-btn { color: var(--red); cursor: pointer; font-weight: bold; font-size: 14px; background: none; border: none; }
 
-        /* CÁC CHỨC NĂNG PHỤ */
-        .widget-area { margin-top: 30px; display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .widget { background: var(--bg-card); padding: 15px; border-radius: var(--radius); border: 1px solid var(--border); min-width: 200px; text-align: center; }
+        .add-btn-small { font-size: 11px; color: var(--accent); cursor: pointer; margin-top: auto; text-align: center; border: 1px dashed var(--border); border-radius: 4px; padding: 4px; transition: 0.2s; }
+        .add-btn-small:hover { background: var(--bg-main); border-color: var(--accent); }
+
+        /* VIỆC HÔM NAY */
+        .daily-task { display: flex; align-items: center; justify-content: space-between; padding: 15px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; border-left: 4px solid var(--accent); }
+        .daily-task.done { opacity: 0.5; text-decoration: line-through; border-left-color: #ccc; }
     </style>
 </head>
 <body>
 
     <div class="header">
         <h1>Rei 🌸</h1>
-        <div class="clock-box" id="vnClock">Đang tải giờ Việt Nam...</div>
+        <div class="clock-box" id="vnClock">Đang tải giờ...</div>
         
         <div class="goal-container">
             <span class="goal-text" id="myGoal">Mục tiêu: Kiếm việc! Kiếm 100 triệu đầu tiên!</span>
@@ -98,88 +101,38 @@
     </div>
 
     <div id="monthly" class="tab-content active">
-        <h3 style="text-align:center; color: var(--accent); margin-bottom: 10px;">Lịch Tháng 4 / 2026</h3>
-        <div class="calendar-grid" id="calGrid">
-            <div class="cal-header">T2</div><div class="cal-header">T3</div><div class="cal-header">T4</div>
-            <div class="cal-header">T5</div><div class="cal-header">T6</div><div class="cal-header">T7</div><div class="cal-header">CN</div>
+        <div class="cal-nav">
+            <button onclick="prevMonth()">◀ Trước</button>
+            <h3 id="monthYearDisplay" style="color: var(--accent); margin: 0 20px;">Tháng ...</h3>
+            <button onclick="nextMonth()">Sau ▶</button>
         </div>
+        <div class="calendar-grid" id="calGrid">
+            </div>
     </div>
 
     <div id="weekly" class="tab-content">
-        <div class="weekly-grid" id="weekGrid"></div>
+        <div class="weekly-grid" id="weekGrid">
+            </div>
     </div>
 
     <div id="daily" class="tab-content">
         <div style="display:flex; gap:10px; margin-bottom:15px;">
-            <input type="text" id="dailyInput" placeholder="Hôm nay cần làm gì Nghi ơi?" style="flex:1; padding:10px; border-radius:8px; border:1px solid var(--border);">
-            <button onclick="addDaily()" style="background:var(--accent); color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">Thêm</button>
+            <input type="text" id="dailyInput" placeholder="Hôm nay cần làm gì Nghi ơi?" style="flex:1; padding:12px; border-radius:8px; border:1px solid var(--border); outline:none;">
+            <button onclick="addDaily()" style="background:var(--accent); color:white; border:none; padding:10px 24px; border-radius:8px; cursor:pointer; font-weight:bold;">Thêm</button>
         </div>
         <div id="dailyList"></div>
     </div>
 
-    <div class="widget-area">
-        <div class="widget">
-            <h4 style="color:var(--accent)">Đếm ngược tốt nghiệp 🎓</h4>
-            <div id="countdown" style="font-weight:bold; margin-top:10px;">-- ngày nữa</div>
-        </div>
-        <div class="widget">
-            <h4 style="color:var(--accent)">Lo-fi Music 🎧</h4>
-            <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZF1DWWQRvui9Df7X?utm_source=generator&theme=0" width="100%" height="80" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </div>
-    </div>
-
     <script>
-        // --- 1. ĐỒNG HỒ VIỆT NAM ---
+        // --- 1. THỜI GIAN & CHUNG ---
         function updateClock() {
             const now = new Date();
             const options = { timeZone: 'Asia/Ho_Chi_Minh', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-            const vnTime = new Intl.DateTimeFormat('vi-VN', options).format(now);
             const dateOptions = { timeZone: 'Asia/Ho_Chi_Minh', day: '2-digit', month: '2-digit', year: 'numeric' };
-            const vnDate = new Intl.DateTimeFormat('vi-VN', dateOptions).format(now);
-            document.getElementById('vnClock').innerText = `🇻🇳 ${vnDate} - ${vnTime}`;
+            document.getElementById('vnClock').innerText = `🇻🇳 ${new Intl.DateTimeFormat('vi-VN', dateOptions).format(now)} - ${new Intl.DateTimeFormat('vi-VN', options).format(now)}`;
         }
-        setInterval(updateClock, 1000);
+        setInterval(updateClock, 1000); updateClock();
 
-        // --- 2. CHỈNH SỬA MỤC TIÊU ---
-        function editGoal() {
-            const newGoal = prompt("Nhập mục tiêu mới của cậu:", document.getElementById('myGoal').innerText);
-            if(newGoal) {
-                document.getElementById('myGoal').innerText = newGoal;
-                localStorage.setItem('qn_goal', newGoal);
-            }
-        }
-        if(localStorage.getItem('qn_goal')) document.getElementById('myGoal').innerText = localStorage.getItem('qn_goal');
-
-        // --- 3. ĐỔI MÀU GIAO DIỆN ---
-        function setTheme(accent, bg) {
-            document.documentElement.style.setProperty('--accent', accent);
-            document.documentElement.style.setProperty('--bg-main', bg);
-            localStorage.setItem('qn_theme_accent', accent);
-            localStorage.setItem('qn_theme_bg', bg);
-        }
-        if(localStorage.getItem('qn_theme_accent')) setTheme(localStorage.getItem('qn_theme_accent'), localStorage.getItem('qn_theme_bg'));
-
-        // --- 4. LOGIC LỊCH THÁNG (ADD/DELETE) ---
-        let calData = JSON.parse(localStorage.getItem('qn_cal')) || {};
-        function renderCal() {
-            const grid = document.getElementById('calGrid');
-            while(grid.children.length > 7) grid.removeChild(grid.lastChild);
-            for(let i=1; i<=30; i++) {
-                let day = document.createElement('div');
-                day.className = 'cal-day';
-                let events = (calData[i] || []).map((ev, idx) => `<div class="event-tag" onclick="deleteCal(${i}, ${idx})">${ev}</div>`).join('');
-                day.innerHTML = `<div class="day-num">${i}</div>${events}<div class="add-btn-small" onclick="addCal(${i})">+</div>`;
-                grid.appendChild(day);
-            }
-        }
-        window.addCal = (d) => { 
-            let v = prompt("Sự kiện ngày " + d + "?"); 
-            if(v){ if(!calData[d]) calData[d]=[]; calData[d].push(v); localStorage.setItem('qn_cal', JSON.stringify(calData)); renderCal(); }
-        };
-        window.deleteCal = (d, idx) => { calData[d].splice(idx, 1); localStorage.setItem('qn_cal', JSON.stringify(calData)); renderCal(); };
-
-        // --- 5. WEEKLY & DAILY (TƯƠNG TỰ) ---
-        // (Tớ đã tối ưu để code chạy trực tiếp và lưu vào localStorage của cậu)
         function switchTab(id) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -187,29 +140,142 @@
             event.target.classList.add('active');
         }
 
-        // --- 6. ĐẾM NGƯỢC (Gợi ý thêm) ---
-        function updateCountdown() {
-            const gradDate = new Date('2026-06-30').getTime(); // Cậu chỉnh lại ngày tốt nghiệp ở đây nhé
-            const now = new Date().getTime();
-            const diff = gradDate - now;
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            document.getElementById('countdown').innerText = days > 0 ? `${days} ngày nữa 🎓` : "Đã đến lúc tỏa sáng!";
+        // --- 2. TÙY CHỈNH THEME & MỤC TIÊU ---
+        function editGoal() {
+            const newGoal = prompt("Nhập mục tiêu mới:", document.getElementById('myGoal').innerText);
+            if(newGoal) { document.getElementById('myGoal').innerText = newGoal; localStorage.setItem('qn_goal', newGoal); }
         }
-        updateCountdown();
+        if(localStorage.getItem('qn_goal')) document.getElementById('myGoal').innerText = localStorage.getItem('qn_goal');
 
-        // Khởi tạo Weekly Planner đơn giản
-        const daysWk = ['T2','T3','T4','T5','T6','T7','CN'];
+        function setTheme(accent, bg) {
+            document.documentElement.style.setProperty('--accent', accent);
+            document.documentElement.style.setProperty('--bg-main', bg);
+            localStorage.setItem('qn_theme_accent', accent); localStorage.setItem('qn_theme_bg', bg);
+        }
+        if(localStorage.getItem('qn_theme_accent')) setTheme(localStorage.getItem('qn_theme_accent'), localStorage.getItem('qn_theme_bg'));
+
+        // --- 3. LỊCH THÁNG ĐỘNG (DYNAMIC CALENDAR) ---
+        let calData = JSON.parse(localStorage.getItem('qn_cal')) || {};
+        let currDate = new Date(); // Lấy ngày giờ hiện tại
+        let currMonth = currDate.getMonth(); // 0-11
+        let currYear = currDate.getFullYear();
+
+        function renderCal() {
+            const grid = document.getElementById('calGrid');
+            document.getElementById('monthYearDisplay').innerText = `Tháng ${currMonth + 1} / ${currYear}`;
+            
+            // Vẽ lại Header T2 - CN
+            grid.innerHTML = `
+                <div class="cal-header">T2</div><div class="cal-header">T3</div><div class="cal-header">T4</div>
+                <div class="cal-header">T5</div><div class="cal-header">T6</div><div class="cal-header">T7</div><div class="cal-header">CN</div>
+            `;
+
+            let firstDay = new Date(currYear, currMonth, 1).getDay();
+            let startOffset = firstDay === 0 ? 6 : firstDay - 1; // Điều chỉnh để Thứ 2 là đầu tuần
+            let daysInMonth = new Date(currYear, currMonth + 1, 0).getDate();
+
+            // Ô trống đầu tháng
+            for(let i = 0; i < startOffset; i++) {
+                grid.innerHTML += `<div class="cal-day" style="border:none; background:transparent;"></div>`;
+            }
+
+            // In các ngày
+            for(let i = 1; i <= daysInMonth; i++) {
+                let dateKey = `${currYear}-${currMonth + 1}-${i}`;
+                let events = (calData[dateKey] || []).map((ev, idx) => 
+                    `<div class="event-tag" onclick="deleteCal('${dateKey}', ${idx})">${ev}</div>`
+                ).join('');
+                
+                // Tô đậm nếu là ngày hôm nay
+                let isToday = (i === new Date().getDate() && currMonth === new Date().getMonth() && currYear === new Date().getFullYear());
+                let todayStyle = isToday ? 'background: #fff0f6; border: 2px solid var(--accent);' : '';
+
+                grid.innerHTML += `
+                    <div class="cal-day" style="${todayStyle}">
+                        <div class="day-num">${i}</div>
+                        ${events}
+                        <div class="add-btn-small" onclick="addCal('${dateKey}')">+ Thêm</div>
+                    </div>
+                `;
+            }
+        }
+
+        function prevMonth() { currMonth--; if(currMonth < 0) { currMonth = 11; currYear--; } renderCal(); }
+        function nextMonth() { currMonth++; if(currMonth > 11) { currMonth = 0; currYear++; } renderCal(); }
+
+        window.addCal = (dateKey) => { 
+            let v = prompt("Ghi chú sự kiện quan trọng:"); 
+            if(v){ if(!calData[dateKey]) calData[dateKey]=[]; calData[dateKey].push(v); localStorage.setItem('qn_cal', JSON.stringify(calData)); renderCal(); }
+        };
+        window.deleteCal = (dateKey, idx) => { 
+            if(confirm('Xóa sự kiện này?')) { calData[dateKey].splice(idx, 1); localStorage.setItem('qn_cal', JSON.stringify(calData)); renderCal(); }
+        };
+
+        // --- 4. WEEKLY PLANNER HOÀN CHỈNH ---
+        let weekData = JSON.parse(localStorage.getItem('qn_week')) || {};
+        const daysWk = ['Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7','CN'];
+        const timesWk = ['Sáng','Chiều','Tối'];
+
         function renderWk() {
             const grid = document.getElementById('weekGrid');
             grid.innerHTML = '<div class="wk-header"></div>' + daysWk.map(d=>`<div class="wk-header">${d}</div>`).join('');
-            ['Sáng','Chiều','Tối'].forEach(t => {
+            
+            timesWk.forEach(t => {
                 grid.innerHTML += `<div class="wk-time">${t}</div>`;
-                daysWk.forEach(d => grid.innerHTML += `<div class="wk-cell">--<div class="add-btn-small">+ Thêm</div></div>`);
+                daysWk.forEach(d => {
+                    let key = `${d}-${t}`;
+                    let tasks = (weekData[key] || []).map((task, idx) => `
+                        <div class="task-card">
+                            <span class="task-card-text">${task}</span>
+                            <button class="task-del-btn" onclick="deleteWk('${key}', ${idx})">✕</button>
+                        </div>
+                    `).join('');
+                    
+                    grid.innerHTML += `
+                        <div class="wk-cell">
+                            ${tasks}
+                            <div class="add-btn-small" onclick="addWk('${key}')">+ Thêm việc</div>
+                        </div>
+                    `;
+                });
             });
         }
 
-        renderCal();
-        renderWk();
+        window.addWk = (key) => {
+            let v = prompt(`Lên kế hoạch cho ${key.replace('-', ' - ')}:`);
+            if(v) { if(!weekData[key]) weekData[key] = []; weekData[key].push(v); localStorage.setItem('qn_week', JSON.stringify(weekData)); renderWk(); }
+        };
+        window.deleteWk = (key, idx) => {
+            weekData[key].splice(idx, 1); localStorage.setItem('qn_week', JSON.stringify(weekData)); renderWk();
+        };
+
+        // --- 5. VIỆC HÔM NAY (DAILY) ---
+        let dailyTasks = JSON.parse(localStorage.getItem('qn_daily')) || [];
+        function renderDaily() {
+            const list = document.getElementById('dailyList');
+            list.innerHTML = '';
+            dailyTasks.forEach(t => {
+                list.innerHTML += `
+                    <div class="daily-task ${t.done ? 'done' : ''}">
+                        <div style="display:flex; align-items:center; gap:10px;">
+                            <input type="checkbox" style="width:18px;height:18px;accent-color:var(--accent)" ${t.done ? 'checked' : ''} onchange="toggleDaily(${t.id})">
+                            <span>${t.text}</span>
+                        </div>
+                        <button class="task-del-btn" onclick="deleteDaily(${t.id})">✕</button>
+                    </div>
+                `;
+            });
+        }
+        window.addDaily = () => {
+            const input = document.getElementById('dailyInput');
+            if(input.value.trim() !== '') { dailyTasks.push({ id: Date.now(), text: input.value.trim(), done: false }); localStorage.setItem('qn_daily', JSON.stringify(dailyTasks)); input.value = ''; renderDaily(); }
+        };
+        document.getElementById('dailyInput').addEventListener('keypress', e => { if(e.key === 'Enter') addDaily(); });
+        window.toggleDaily = (id) => { let task = dailyTasks.find(t => t.id === id); if(task) task.done = !task.done; localStorage.setItem('qn_daily', JSON.stringify(dailyTasks)); renderDaily(); };
+        window.deleteDaily = (id) => { dailyTasks = dailyTasks.filter(t => t.id !== id); localStorage.setItem('qn_daily', JSON.stringify(dailyTasks)); renderDaily(); };
+
+        // Khởi động
+        renderCal(); renderWk(); renderDaily();
     </script>
 </body>
 </html>
