@@ -1,11 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Lịch Trình Cá Nhân",
-  "description": "Quản lý công việc & Giới hạn TikTok",
-  "version": "1.2.0",
-  "action": {
-    "default_popup": "popup.html"
-  },
+  "name": "Vệ Sĩ Kỷ Luật Của Rei",
+  "description": "Chặn TikTok sau 5 phút mỗi ngày để tập trung làm điều có ích!",
+  "version": "1.0",
   "permissions": [
     "storage"
   ],
