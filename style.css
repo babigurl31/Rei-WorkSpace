@@ -1,0 +1,36 @@
+/* --- BỐ CỤC 3 CỘT --- */
+.main-layout { display: flex; gap: 20px; max-width: 1400px; margin: 0 auto; align-items: flex-start; }
+.sidebar-left, .sidebar-right { width: 280px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; }
+.content-center { flex: 1; min-width: 500px; }
+
+/* --- WIDGETS (TIMER, IDEA, SHOP) --- */
+.widget { background: var(--bg-card); padding: 20px; border-radius: var(--radius); border: 2px dashed var(--border); box-shadow: 0 4px 15px rgba(236, 64, 122, 0.05); }
+.widget-avatar { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 15px; display: block; border: 3px solid var(--accent); background: #fff0f6; }
+.widget-title { text-align: center; color: var(--accent); font-size: 16px; font-weight: bold; margin-bottom: 5px; }
+.widget-hint { font-size: 11px; text-align: center; color: var(--text-muted); margin-bottom: 15px; }
+
+/* CSS cho Timer */
+.timer-display { font-size: 40px; font-weight: bold; text-align: center; color: var(--text-main); font-family: 'Space Mono', monospace; margin: 15px 0; }
+.timer-controls { display: flex; gap: 10px; margin-bottom: 15px; }
+.timer-btn { flex: 1; padding: 10px; background: var(--accent); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s;}
+.timer-btn:hover { opacity: 0.8; }
+.timer-btn.stop { background: var(--red); }
+.timer-setting { text-align: center; font-size: 13px; font-weight: bold; }
+.timer-setting input { width: 50px; text-align: center; border: 1px solid var(--border); border-radius: 4px; padding: 4px; font-weight: bold; outline: none;}
+.flower-garden { min-height: 50px; padding: 10px; background: var(--bg-main); border-radius: 8px; text-align: center; font-size: 22px; word-wrap: break-word; }
+
+/* CSS cho Idea & Shop */
+.mini-input-group { display: flex; gap: 5px; margin-bottom: 15px; }
+.mini-input-group input { flex: 1; padding: 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; outline: none; }
+.mini-input-group button { padding: 8px 12px; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+.mini-list { list-style: none; display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto; padding-right: 5px;}
+.mini-item { background: var(--bg-main); padding: 8px 10px; border-radius: 6px; font-size: 13px; display: flex; justify-content: space-between; align-items: flex-start; border-left: 3px solid var(--accent); gap: 10px;}
+.mini-item.done span { text-decoration: line-through; opacity: 0.5; }
+.mini-item span { flex: 1; word-break: break-word; }
+.mini-del-btn { background: none; border: none; color: var(--red); font-weight: bold; cursor: pointer; }
+
+@media (max-width: 1100px) {
+    .main-layout { flex-direction: column; }
+    .sidebar-left, .sidebar-right { width: 100%; flex-direction: row; }
+    .sidebar-left .widget, .sidebar-right .widget { flex: 1; }
+}
