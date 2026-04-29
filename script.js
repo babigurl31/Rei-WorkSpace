@@ -26,7 +26,7 @@ function setTheme(accent, bg) {
 }
 if(localStorage.getItem('qn_theme_accent')) setTheme(localStorage.getItem('qn_theme_accent'), localStorage.getItem('qn_theme_bg'));
 
-const prioLabels = { high: '🔴 Hoàn thành trong thời gian quy định', medium: '🟡 Hoàn thành trong 12 tiếng', low: '🔵 Hoàn thành trong ngày' };
+const prioLabels = { high: '🔴 Quan trọng', medium: '🟡 Trong 12 tiếng', low: '🔵 Trong ngày' };
 const prioClasses = { high: 'prio-high', medium: 'prio-medium', low: 'prio-low' };
 
 // --- VIỆC HÔM NAY ---
@@ -128,3 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dailyInp = document.getElementById('dailyInput');
     if(dailyInp) dailyInp.addEventListener('keypress', e => { if(e.key === 'Enter') addDaily(); });
 });
+// --- ĐÓNG / MỞ NGĂN KÉO HAI BÊN ---
+window.toggleDrawer = (drawerId) => {
+    document.getElementById(drawerId).classList.toggle('open');
+};
