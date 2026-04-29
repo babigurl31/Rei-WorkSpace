@@ -186,17 +186,6 @@
         </div>
     </div>
 
-    <div id="secretModal" class="modal-overlay">
-        <div class="modal-content" style="max-width: 600px; background: #fffafc; border: 2px dashed var(--accent);">
-            <h3 style="color: var(--accent); text-align: center;">🤫 Góc Bí Mật Của Nghi</h3>
-            <textarea id="secretDiary" rows="15" placeholder="Hôm nay có tâm sự gì thế? Cứ viết hết ra đây nhé..." style="width: 100%; padding: 15px; border-radius: 8px; border: 1px solid var(--border); outline: none; resize: vertical; font-size: 14px; line-height: 1.6;"></textarea>
-            <div style="display: flex; gap: 10px; margin-top: 10px;">
-                <button class="btn-add-main" style="flex: 1;" onclick="saveSecret()">Lưu giữ bí mật</button>
-                <button class="btn-add-main" style="flex: 1; background: #999;" onclick="closeSecret()">Khóa lại</button>
-            </div>
-        </div>
-    </div>
-
     <div id="leftDrawer" class="drawer drawer-left">
         <button class="drawer-toggle toggle-left" onclick="toggleDrawer('leftDrawer')">
     <img src="anh-timer.png" style="width: 25px; height: 25px; display: block;">
@@ -273,24 +262,6 @@
 
         const prioLabels = { high: '🔴 Cao', medium: '🟡 T.Bình', low: '🔵 Thấp' };
         const prioClasses = { high: 'prio-high', medium: 'prio-medium', low: 'prio-low' };
-
-        // --- 3. GÓC BÍ MẬT (NHẬT KÝ) ---
-        const secretTrigger = document.getElementById('secretTrigger');
-        const secretModal = document.getElementById('secretModal');
-        const secretDiary = document.getElementById('secretDiary');
-
-        secretTrigger.addEventListener('dblclick', () => {
-            let savedDiary = localStorage.getItem('qn_secret_diary') || '';
-            secretDiary.value = savedDiary;
-            secretModal.style.display = 'flex';
-        });
-
-        function closeSecret() { secretModal.style.display = 'none'; }
-        function saveSecret() {
-            localStorage.setItem('qn_secret_diary', secretDiary.value);
-            alert('Đã giấu kín những dòng tâm sự này! 🤫');
-            closeSecret();
-        }
 
         // --- 4. VIỆC HÔM NAY ---
         let dailyTasks = JSON.parse(localStorage.getItem('qn_daily_v2')) || [];
@@ -414,6 +385,7 @@
     <script src="timer.js"></script>
     <script src="idea.js"></script>
     <script src="shop.js"></script>
-
+<link rel="stylesheet" href="nhat_ky.css">
+    <script src="nhat_ky.js"></script>
 </body>
 </html>
