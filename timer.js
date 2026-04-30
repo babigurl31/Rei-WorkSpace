@@ -120,7 +120,7 @@ window.toggleTimer = () => {
                     document.getElementById('timerDisplay').innerText = formatTime(timeRemaining);
                     btn.innerText = "Bắt đầu làm";
 
-                    alert("Hết giờ nghỉ rồi Nghi ơi! Quay lại chiến đấu tiếp nào 💪");
+                    alert("Hết giờ nghỉ rồi Babi ơi! Quay lại chiến đấu tiếp nào 💪");
                 }
             }
         }, 1000);
