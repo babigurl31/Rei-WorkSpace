@@ -1,5 +1,5 @@
 /* NGĂN KÉO TRƯỢT */
-.drawer { position: fixed; top: 50%; transform: translateY(-50%); background: var(--bg-main); border: 2px dashed var(--accent); width: 300px; z-index: 1000; transition: 0.4s ease-in-out; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+.drawer { position: fixed; top: 50%; transform: translateY(-50%); background: var(--bg-main); border: 2px dashed var(--accent); width: 320px; z-index: 1000; transition: 0.3s ease; }
 .drawer-left { left: -300px; border-left: none; border-radius: 0 20px 20px 0; }
 .drawer-left.open { left: 0; }
 .drawer-right { right: -300px; border-right: none; border-radius: 20px 0 0 20px; }
