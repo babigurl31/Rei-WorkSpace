@@ -195,11 +195,11 @@
             <div class="widget">
                 <div class="widget-title">Trạm Tập Trung</div>
                 
-                <!-- BẢNG ĐIỀU CHỈNH THỜI GIAN TỰ DO -->
+              <!-- BẢNG ĐIỀU CHỈNH THỜI GIAN (Nghỉ ngẫu nhiên) -->
                 <div class="timer-setting" style="margin-bottom: 10px; font-size: 14px; text-align: center;">
                     Làm: <input type="number" id="timerInput" value="25" min="1" style="width: 45px; padding: 3px; border-radius: 4px; border: 1px solid var(--accent); outline: none; text-align: center;"> p
                     &nbsp;|&nbsp;
-                    Nghỉ: <input type="number" id="breakInput" value="5" min="1" max="25" style="width: 45px; padding: 3px; border-radius: 4px; border: 1px solid var(--accent); outline: none; text-align: center;"> p
+                    Nghỉ: <span style="color: var(--accent); font-weight: bold;">Ngẫu nhiên 🎲</span>
                 </div>
                 
                 <div id="timerMode" style="text-align: center; font-size: 13px; font-weight: bold; color: var(--accent); margin-top: 5px;">Sẵn sàng làm việc!</div>
@@ -211,11 +211,16 @@
                     <button class="timer-btn stop" onclick="resetTimer()">Cài lại từ đầu</button>
                 </div>
 
+              <!-- BẢNG THỐNG KÊ NGÀY & TUẦN -->
                 <div style="text-align: center; font-size: 13px; margin-top: 20px; padding: 15px; background: #fff0f5; border-radius: 8px; border: 1px dashed var(--accent);">
-                    🔥 Tổng tập trung hôm nay:<br>
+                    🔥 Hôm nay:<br>
                     <span id="totalFocusDisplay" style="font-weight: bold; color: var(--red); font-size: 22px;">0 phút</span>
+                    
+                    <hr style="border: 0; border-top: 1px dashed var(--border); margin: 10px 0;">
+                    
+                    🌟 Tổng tuần này:<br>
+                    <span id="weeklyFocusDisplay" style="font-weight: bold; color: var(--accent); font-size: 16px;">0 phút</span>
                 </div>
-            </div>
         </div>
     </div>
     
