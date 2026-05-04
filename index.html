@@ -240,10 +240,15 @@
                 <ul class="mini-list" id="ideaList"></ul>
             </div>
             
-            <div class="widget-title">
-            <span id="checklistTitle">🛒 Checklist!</span>
-            <span onclick="editChecklistTitle()" style="font-size: 11px; color: var(--text-muted); cursor: pointer; text-decoration: underline; margin-left: 8px; font-weight: normal;">[Đổi tên]</span>
-        </div>
+            <div class="widget">
+                <div class="widget-title">
+                    <span id="checklistTitle">🛒 Checklist!</span>
+                    <span onclick="editChecklistTitle()" style="font-size: 11px; color: var(--text-muted); cursor: pointer; text-decoration: underline; margin-left: 8px; font-weight: normal;">[Đổi tên]</span>
+                </div>
+                <div class="mini-input-group">
+                    <input type="text" id="shopInput" placeholder="Cần mua gì?">
+                    <button onclick="addShop()">Thêm</button>
+                </div>
                 <ul class="mini-list" id="shopList"></ul>
             </div>
         </div>
