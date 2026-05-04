@@ -240,12 +240,10 @@
                 <ul class="mini-list" id="ideaList"></ul>
             </div>
             
-            <div class="widget">
-                <div class="widget-title">🛒 Checklist!</div>
-                <div class="mini-input-group">
-                    <input type="text" id="shopInput" placeholder="Cần mua gì?">
-                    <button onclick="addShop()">Thêm</button>
-                </div>
+            <div class="widget-title">
+            <span id="checklistTitle">🛒 Checklist!</span>
+            <span onclick="editChecklistTitle()" style="font-size: 11px; color: var(--text-muted); cursor: pointer; text-decoration: underline; margin-left: 8px; font-weight: normal;">[Đổi tên]</span>
+        </div>
                 <ul class="mini-list" id="shopList"></ul>
             </div>
         </div>
@@ -253,11 +251,9 @@
 
         <!-- CHỨC NĂNG ĐỔI HÌNH NỀN -->
     <script>
-        function loadBackground() {
-            // Lấy ảnh cậu đã lưu, nếu chưa có thì dùng ảnh cánh hoa đào
+        function loadBackground() {        
             let savedBg = localStorage.getItem('qn_bg') || 'nen-dong.gif';
             
-            // Cài đặt ảnh nền và thêm một lớp phủ trắng mờ (0.3) để dễ đọc chữ
             document.body.style.backgroundImage = `linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url('${savedBg}')`;
             document.body.style.backgroundSize = 'cover';
             document.body.style.backgroundPosition = 'center center';
@@ -278,7 +274,24 @@
         // Tự động tải hình nền khi vừa mở web
         loadBackground();
     </script>
-        
+       <!-- CHỨC NĂNG ĐỔI TÊN CHECKLIST -->
+    <script>
+        function editChecklistTitle() {
+            const currentTitle = document.getElementById('checklistTitle').innerText;
+            const newTitle = prompt("Nghi muốn đổi tên danh sách này thành gì?", currentTitle);
+            
+            if (newTitle !== null && newTitle.trim() !== "") {
+                document.getElementById('checklistTitle').innerText = newTitle.trim();
+                localStorage.setItem('qn_checklist_title', newTitle.trim());
+            }
+        }
+
+        // Tải lại tên đã lưu khi vừa mở web
+        const savedChecklistTitle = localStorage.getItem('qn_checklist_title');
+        if (savedChecklistTitle) {
+            document.getElementById('checklistTitle').innerText = savedChecklistTitle;
+        }
+    </script> 
     <script>
         // --- 1. THỜI GIAN & CHUNG ---
         function updateClock() {
