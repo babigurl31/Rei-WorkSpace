@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 <div class="diary-header" style="flex-direction: column; align-items: stretch;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h2 style="margin: 0;">💌 Góc Của Nghi</h2>
+                        <h2 style="margin: 0;">💌 Góc Của Rei</h2>
                         <button id="closeDiaryBtn" class="close-diary-btn" style="position: static;">✕</button>
                     </div>
                     
