@@ -1,37 +1,45 @@
 let timerInterval;
 let isTimerRunning = false;
-let isWorking = true; // true = Đang làm, false = Đang nghỉ 5p
-let timeRemaining = 20 * 60;
+let isWorking = true; 
+let timeRemaining = 25 * 60;
 let totalFocusSeconds = 0;
+let weeklyFocusSeconds = 0; 
+let sessionFocusSeconds = 0;
 
-// KIỂM TRA QUA NGÀY MỚI (Để reset tổng giờ và bó hoa)
+const motivations = [
+    "Babi giỏi quá! Cứ giữ đà này nhé! 💪",
+    "Sự tập trung của Babi đang tạo ra phép màu đó! ✨",
+    "Mệt không? Uống ngụm nước rồi chiến tiếp nha! 💧",
+    "Babi sắp chạm đến mục tiêu rồi, cố lên! 🚀",
+    "Một cô gái chăm chỉ là một cô gái xinh đẹp nhất! 🌸",
+    "Tuyệt vời! Cậu đang làm rất tốt! 👏"
+];
+
+function getMonday(d) {
+    let date = new Date(d);
+    let day = date.getDay();
+    let diff = date.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(date.setDate(diff)).toLocaleDateString('vi-VN');
+}
+
 let todayStr = new Date().toLocaleDateString('vi-VN');
+let currentWeekStr = getMonday(new Date());
+
 let savedDate = localStorage.getItem('qn_focus_date');
+let savedWeekDate = localStorage.getItem('qn_focus_week_date');
 
 if (savedDate !== todayStr) {
-    localStorage.setItem('qn_bouquet', JSON.stringify([]));
     localStorage.setItem('qn_total_focus', '0');
     localStorage.setItem('qn_focus_date', todayStr);
 }
 
-let bouquetArr = JSON.parse(localStorage.getItem('qn_bouquet')) || [];
-totalFocusSeconds = parseInt(localStorage.getItem('qn_total_focus')) || 0;
-
-function renderBouquet() {
-    const area = document.getElementById('bouquetArea');
-    area.innerHTML = '';
-    bouquetArr.forEach(flower => {
-        let img = document.createElement('img');
-        img.src = flower.src;
-        img.style.position = 'absolute';
-        img.style.width = '45px'; 
-        img.style.left = flower.x + '%';
-        img.style.bottom = flower.y + '%';
-        img.style.transform = `rotate(${flower.rot}deg)`;
-        img.style.zIndex = flower.z;
-        area.appendChild(img);
-    });
+if (savedWeekDate !== currentWeekStr) {
+    localStorage.setItem('qn_weekly_focus', '0');
+    localStorage.setItem('qn_focus_week_date', currentWeekStr);
 }
+
+totalFocusSeconds = parseInt(localStorage.getItem('qn_total_focus')) || 0;
+weeklyFocusSeconds = parseInt(localStorage.getItem('qn_weekly_focus')) || 0;
 
 function formatTime(sec) {
     let m = Math.floor(sec / 60).toString().padStart(2, '0');
@@ -43,12 +51,26 @@ function updateTotalDisplay() {
     let totalMins = Math.floor(totalFocusSeconds / 60);
     let displayElem = document.getElementById('totalFocusDisplay');
     if (displayElem) displayElem.innerText = `${totalMins} phút`;
+
+    let wMins = Math.floor(weeklyFocusSeconds / 60);
+    let wHours = Math.floor(wMins / 60);
+    let remainMins = wMins % 60;
+    
+    let displayWeekly = document.getElementById('weeklyFocusDisplay');
+    if (displayWeekly) {
+        if (wHours > 0) {
+            displayWeekly.innerText = `${wHours} giờ ${remainMins} phút`;
+        } else {
+            displayWeekly.innerText = `${wMins} phút`;
+        }
+    }
 }
 
 window.toggleTimer = () => {
     const btn = document.getElementById('startTimerBtn');
     const modeText = document.getElementById('timerMode');
-    let workMins = parseInt(document.getElementById('timerInput').value) || 20;
+    
+    let workMins = parseInt(document.getElementById('timerInput').value) || 25;
 
     if (isTimerRunning) {
         clearInterval(timerInterval);
@@ -56,85 +78,86 @@ window.toggleTimer = () => {
         isTimerRunning = false;
     } else {
         if (timeRemaining <= 0 || btn.innerText === "Bắt đầu") {
-            timeRemaining = isWorking ? workMins * 60 : 5 * 60;
+            // Không gán breakMins lúc bấm Bắt đầu nữa, vì lúc này chưa cần biết
+            timeRemaining = isWorking ? workMins * 60 : timeRemaining; 
+            if (isWorking) sessionFocusSeconds = 0; 
         }
 
         btn.innerText = "Tạm dừng";
         isTimerRunning = true;
-        modeText.innerText = isWorking ? "🔥 Đang tập trung..." : "☕ Đang nghỉ ngơi...";
+        modeText.innerText = isWorking ? "🔥 Đang tập trung..." : modeText.innerText;
         modeText.style.color = isWorking ? "var(--red)" : "#388e3c";
 
         timerInterval = setInterval(() => {
             timeRemaining--;
             document.getElementById('timerDisplay').innerText = formatTime(timeRemaining);
 
-            // CỘNG DỒN GIỜ TẬP TRUNG (Chỉ cộng khi đang ở mode làm việc)
             if (isWorking) {
                 totalFocusSeconds++;
-                if (totalFocusSeconds % 60 === 0) { // Lưu dữ liệu mỗi phút
+                weeklyFocusSeconds++; 
+                sessionFocusSeconds++;
+                
+                if (totalFocusSeconds % 60 === 0) { 
                     localStorage.setItem('qn_total_focus', totalFocusSeconds);
+                    localStorage.setItem('qn_weekly_focus', weeklyFocusSeconds);
                     updateTotalDisplay();
+                }
+                
+                if (sessionFocusSeconds > 0 && sessionFocusSeconds % 600 === 0) {
+                    let randMsg = motivations[Math.floor(Math.random() * motivations.length)];
+                    alert("💌 " + randMsg);
+                }
+                
+                if (sessionFocusSeconds === 60 * 60) {
+                    alert("🚨 CẢNH BÁO: Babi đã ngồi liên tục 1 tiếng đồng hồ rồi đó! Hãy vươn vai, nhìn ra xa hoặc đứng lên đi lại một chút cho đỡ mỏi mắt và cột sống nha! 👀");
                 }
             }
 
-            // KHI HẾT GIỜ ĐẾM NGƯỢC
             if (timeRemaining <= 0) {
                 clearInterval(timerInterval);
                 isTimerRunning = false;
 
                 if (isWorking) {
-                    // 1. Hoàn thành Phiên làm việc -> Cắm hoa
-                    const types = [
-                        'hoa-lavender.png', 'hoa-hong.png', 'hoa-cuc-hoa-mi.png', 
-                        'hoa-huong-duong.png', 'hoa-tulip.png', 'hoa-linh-lan.png', 'hoa-lily-hong.png'
-                    ];
-                    let randomFlower = types[Math.floor(Math.random() * types.length)];
-                    let randomX = Math.floor(Math.random() * 50) + 15;
-                    let randomY = Math.floor(Math.random() * 30) + 35;
-                    let randomRot = Math.floor(Math.random() * 40) - 20;
-                    let randomZ = Math.floor(Math.random() * 10);
-
-                    bouquetArr.push({ src: randomFlower, x: randomX, y: randomY, rot: randomRot, z: randomZ });
-                    localStorage.setItem('qn_bouquet', JSON.stringify(bouquetArr));
-                    renderBouquet();
-
-                    // 2. Tự động chuyển sang mode Nghỉ ngơi (5 phút)
+                    // CƠ CHẾ BỐC THĂM NGHỈ NGƠI NGẪU NHIÊN (TỪ 5 ĐẾN 25 PHÚT)
+                    let randomBreakMins = Math.floor(Math.random() * (25 - 5 + 1)) + 5;
+                    
                     isWorking = false;
-                    timeRemaining = 5 * 60;
-                    modeText.innerText = "☕ Nghỉ giải lao (5 phút)";
+                    timeRemaining = randomBreakMins * 60;
+                    modeText.innerText = `☕ Nghỉ giải lao (${randomBreakMins} phút)`;
                     modeText.style.color = "#388e3c";
-                    document.getElementById('timerDisplay').innerText = "05:00";
+                    document.getElementById('timerDisplay').innerText = formatTime(timeRemaining);
                     btn.innerText = "Bắt đầu nghỉ";
                     
                     localStorage.setItem('qn_total_focus', totalFocusSeconds);
+                    localStorage.setItem('qn_weekly_focus', weeklyFocusSeconds);
                     updateTotalDisplay();
-                    alert("Giỏi quá! Cậu đã hoàn thành một phiên tập trung và được tặng 1 bông hoa 💐. Nghỉ ngơi 5 phút thôi nhé!");
+                    
+                    alert(`Ting ting! 🎲 Hệ thống bốc thăm ngẫu nhiên thưởng cho Babi ${randomBreakMins} phút nghỉ ngơi. Xõa thôi cậu ơi! 🎉`);
 
                 } else {
-                    // 3. Hoàn thành Phiên nghỉ ngơi -> Chuẩn bị quay lại làm
                     isWorking = true;
-                    workMins = parseInt(document.getElementById('timerInput').value) || 20;
+                    workMins = parseInt(document.getElementById('timerInput').value) || 25;
                     timeRemaining = workMins * 60;
                     modeText.innerText = "🔥 Sẵn sàng làm việc!";
                     modeText.style.color = "var(--accent)";
                     document.getElementById('timerDisplay').innerText = formatTime(timeRemaining);
                     btn.innerText = "Bắt đầu làm";
 
-                    alert("Hết giờ nghỉ rồi Babi ơi! Quay lại chiến đấu tiếp nào 💪");
+                    alert("Hết giờ nghỉ ngơi rồi Babi ơi! Quay lại bàn làm việc chiến đấu tiếp thôi nào 💪");
                 }
             }
         }, 1000);
     }
 };
 
-// NÚT RESET: Khôi phục mọi thứ về lúc đầu và dọn sạch hoa
 window.resetTimer = () => {
-    if (confirm("Reset sẽ xóa sạch bó hoa hiện tại và bắt đầu lại thời gian. Cậu có chắc không?")) {
+    if (confirm("Cậu có chắc muốn cài lại đồng hồ từ đầu không? (Số phút đã tích lũy vẫn được giữ nguyên nhé)")) {
         clearInterval(timerInterval);
         isTimerRunning = false;
         isWorking = true;
+        sessionFocusSeconds = 0;
 
-        let workMins = parseInt(document.getElementById('timerInput').value) || 20;
+        let workMins = parseInt(document.getElementById('timerInput').value) || 25;
         timeRemaining = workMins * 60;
 
         document.getElementById('timerDisplay').innerText = formatTime(timeRemaining);
@@ -142,17 +165,12 @@ window.resetTimer = () => {
         let modeText = document.getElementById('timerMode');
         modeText.innerText = "Sẵn sàng làm việc!";
         modeText.style.color = "var(--accent)";
-
-        bouquetArr = [];
-        localStorage.setItem('qn_bouquet', JSON.stringify(bouquetArr));
-        renderBouquet();
     }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    let workMins = parseInt(document.getElementById('timerInput').value) || 20;
+    let workMins = parseInt(document.getElementById('timerInput').value) || 25;
     timeRemaining = workMins * 60;
     document.getElementById('timerDisplay').innerText = formatTime(timeRemaining);
     updateTotalDisplay();
-    renderBouquet();
 });
